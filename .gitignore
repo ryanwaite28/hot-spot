@@ -1,0 +1,11 @@
+# dependencies
+/node_modules
+
+# glyphs
+/src/vault/other
+
+# sqlite database
+database.sqlite
+
+# firebase-admin service account json
+/src/firebase_config/firebase.json
