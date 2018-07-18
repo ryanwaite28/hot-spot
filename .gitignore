@@ -9,3 +9,4 @@ database.sqlite
 
 # firebase-admin service account json
 src/firebase_config/firebase.json
+src/firebase_config/firebase-admin.json
