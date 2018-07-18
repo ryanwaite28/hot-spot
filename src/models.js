@@ -61,6 +61,7 @@ models.ChatRooms = sequelize.define('chatrooms', {
   summary:         { type: Sequelize.STRING(250), allowNull: false, defaultValue: '' },
   icon:            { type: Sequelize.STRING(500), allowNull: false, defaultValue: '/vault/images/chatroom-art.png' },
   link:            { type: Sequelize.STRING(500), allowNull: false, defaultValue: '' },
+  file:            { type: Sequelize.STRING(500), allowNull: false, defaultValue: '' },
   date_created:    { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
   unique_value:    { type: Sequelize.STRING, unique: true, defaultValue: chamber.uniqueValue }
 }, {

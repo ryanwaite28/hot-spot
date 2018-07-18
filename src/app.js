@@ -8,6 +8,7 @@ const fileUpload = require('express-fileupload');
 const validator = require('validator');
 const nunjucks = require('nunjucks');
 
+const google = require('./firebase_config/index');
 const chamber = require('./chamber');
 
 const main_router = require('./routers/main/router').router;

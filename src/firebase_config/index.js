@@ -1,36 +1,29 @@
-// imports
 const Storage = require('@google-cloud/storage');
 const firebase = require('firebase');
 const firebase_admin = require("firebase-admin");
 const chamber = require('../chamber');
 
-// Setup
-const firebaseConfig = {
-    apiKey: "AIzaSyByRSgYKDKwIMmw5lQeVfXFTX2pDqPCCy0",
-    authDomain: "blue-world-202.firebaseapp.com",
-    databaseURL: "https://blue-world-202.firebaseio.com",
-    projectId: "blue-world-202",
-    storageBucket: "blue-world-202.appspot.com",
-    messagingSenderId: "990574132403"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-// const storage = firebaseApp.storage();
-// const storageRef = storage.ref();
-
-// firebase init
 const firebase_keyfile = "./firebase.json";
 const firebase_ServiceAccount = require(firebase_keyfile);
+const firebaseadmin_keyfile = "./firebase-admin.json";
+const firebaseadmin_ServiceAccount = require(firebaseadmin_keyfile);
+
+const firebaseConfig = firebase_ServiceAccount;
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+
+
 firebase_admin.initializeApp({
-  credential: firebase_admin.credential.cert(firebase_ServiceAccount),
+  credential: firebase_admin.credential.cert(firebaseadmin_ServiceAccount),
   storageBucket: firebaseConfig.storageBucket,
   databaseURL: firebaseConfig.databaseURL,
 });
 
 
-const firebase_db         = firebase_admin.database();            // database
-const firebase_bucket     = firebase_admin.storage().bucket();    // storage
-const firestore_fs        = firebase_admin.firestore();           // firestore
+const firebase_db         = firebase_admin.database();
+const firebase_bucket     = firebase_admin.storage().bucket();
+const firestore_fs        = firebase_admin.firestore();
+
 
 
 function createPublicFileURL(filename) {
@@ -43,14 +36,12 @@ function upload_file(file, prev_ref = "") {
     if(chamber.allowed_images.indexOf(ext.toLowerCase()) == -1) {
       return reject({error: true, message: 'File Not Accepted. Must Be Image Type.'});
     }
-
     var unique_filename = chamber.uniqueValue();
     var filename = "";
     if(file.name.indexOf('.') == -1) {
       for(var key in chamber.allowed_images) {
         var type = chamber.allowed_images[key];
         if( file.name.indexOf(type) != -1 ){
-          // console.log('match: ', type);
           filename = unique_filename + file.name.split(type)[0] + '.' + type;
           break;
         }
@@ -59,9 +50,7 @@ function upload_file(file, prev_ref = "") {
     else {
       filename = unique_filename + file.name;
     }
-
     var image_path = __dirname + '/' + filename;
-
     file.mv(filename, function(error) {
       if (error) {
         return reject({error: true, message: "could not upload file..."});
@@ -78,7 +67,6 @@ function upload_bucket(filename, prev_ref = "") {
     var options = {
       public: true
     };
-
     if(prev_ref && /https:\/\/storage.googleapis.com\/.*\/.*/.test(prev_ref)) {
       // console.log("previous image exist; Deleting it...", prev_ref);
       // options.destination = firebase_bucket.file(prev_ref.split('/')[4]);
@@ -90,7 +78,6 @@ function upload_bucket(filename, prev_ref = "") {
         // console.log('error deleting: ', e);
       }
     }
-
     firebase_bucket.upload(filename, options)
     .then((data) => {
       let link = createPublicFileURL(filename);
@@ -118,20 +105,15 @@ function upload_chain(file, prev_ref = "") {
 }
 
 
-
-
-
-// exports
 module.exports = {
   firebaseConfig,
   firebase_ServiceAccount,
+  firebaseadmin_ServiceAccount,
   firebaseApp,
   firebase_admin,
-  //
   firebase_db,
   firestore_fs,
   firebase_bucket,
-  //
   createPublicFileURL,
   upload_file,
   upload_bucket,
