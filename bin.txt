@@ -5,5 +5,5 @@ npm install -g gulp-cli
 yarn add @google-cloud/storage bcrypt-nodejs client-sessions cors express express-fileupload firebase firebase-admin
 yarn add nodemon nunjucks pg pg-hstore sequelize sqlite sqlite3 validator emailjs multer body-parser
 
-yarn add gulp gulp-less gulp-babel gulp-concat gulp-uglify gulp-uglifyes uglify-js gulp-rename gulp-clean-css gulp-util del
+yarn add gulp gulp-less gulp-babel gulp-concat gulp-uglify gulp-uglifyes uglify-js gulp-rename gulp-clean-css gulp-util gulp-htmlmin del
 yarn add babel-core babel-loader babel-preset-es2015
